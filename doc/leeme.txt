@@ -1,0 +1,16 @@
+DESCRIPCION
+
+MusicScoreGen es una sencilla utilidad que ayuda en la generación
+automática de partituras.
+
+CONFIGURACION
+
+Se configura mediante un fichero de propiedades (musicscoregen.properties).
+También se puede configurar mediante argumentos en la línea de comandos,
+teniendo estos prevalencia sobre los del fichero de configuración.
+
+EJECUCION
+
+./run.sh
+
+./run.sh -Dtonalidad=Gb -Dcompas=3/4
