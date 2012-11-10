@@ -93,6 +93,7 @@ public class GeneradorLilypond implements Generador {
 		writer.println("\t>>");
 		// \layout { }
 		writer.println("\t\\layout { }");
+		writer.println("\t\\midi { }");
 		// }
 		writer.println("}");
 	}

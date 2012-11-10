@@ -16,6 +16,10 @@ public class MusicScoreGen {
 	private static final String PARAM_FICHERO_EN = "file";
 	private static final String PARAM_COMPAS = "compas";
 	private static final String PARAM_COMPAS_EN = "time";
+	private static final String PARAM_MAXINTERVAL = "maximo.intervalo";
+	private static final String PARAM_MAXINTERVAL_EN = "max.interval";
+	private static final String PARAM_MININTERVAL = "minimo.intervalo";
+	private static final String PARAM_MININTERVAL_EN = "min.interval";
 	private static final String PARAM_TONALIDAD = "tonalidad";
 	private static final String PARAM_TONALIDAD_EN = "key";
 	private static final String PARAM_COMPASES = "compases";
@@ -30,6 +34,8 @@ public class MusicScoreGen {
 	protected static Compas compas;
 	protected static String tonalidad;
 	protected static int compases;
+	protected static int maxinterval;
+	protected static int mininterval;
 	protected static Pentagrama[] pentagramas;
 
 	protected static Map<Integer, List<Integer>> progresiones;
@@ -68,6 +74,10 @@ public class MusicScoreGen {
 		tonalidad = MusicUtils.leerParametro(PARAM_TONALIDAD, PARAM_TONALIDAD_EN, prop, true);
 		String sCompases = MusicUtils.leerParametro(PARAM_COMPASES, PARAM_COMPASES_EN, prop, true);
 		compases = Integer.valueOf(sCompases);
+		String sMaxinterval = MusicUtils.leerParametro(PARAM_MAXINTERVAL, PARAM_MAXINTERVAL_EN, prop, true);
+		maxinterval = Integer.valueOf(sMaxinterval);				
+		String sMininterval = MusicUtils.leerParametro(PARAM_MININTERVAL, PARAM_MININTERVAL_EN, prop, true);
+		mininterval = Integer.valueOf(sMininterval);							
 		String sPentagramas = MusicUtils.leerParametro(PARAM_PENTAGRAMAS, PARAM_PENTAGRAMAS_EN, prop, true);
 		String[] sListaPentagramas = sPentagramas.split(",");
 		pentagramas = new Pentagrama[sListaPentagramas.length];
@@ -111,7 +121,7 @@ public class MusicScoreGen {
 		// generamos las partituras compás a compás
 		for (int i = 0; i < compases; i++) {
 			for (int j = 0; j < pentagramas.length; j++) {
-				score[j][i] = pentagramas[j].generarCompas(compas, tonalidad, acordes[i]);
+				score[j][i] = pentagramas[j].generarCompas(compas, tonalidad, acordes[i],j,maxinterval,mininterval);
 			}
 		}
 		// generar el fichero de salida

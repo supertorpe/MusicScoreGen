@@ -3,6 +3,7 @@ package com.supertorpe.musicscoregen;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.Random;
 
 public class Pentagrama {
 	
@@ -55,8 +56,11 @@ public class Pentagrama {
 			bloquesRitmicosDisponibles[i] = new BloqueRitmico(duraciones);
 		}
 	}
-	
-	public List<Elemento> generarCompas(Compas compas, String tonalidad, Integer grado) throws Exception {
+
+    Nota[] Noteant=new Nota[2];
+    int iniciof[]=new int[2];
+    		    
+	public List<Elemento> generarCompas(Compas compas, String tonalidad, Integer grado,Integer penta,Integer maxinterval,Integer mininterval) throws Exception {			
 		List<Elemento> result = new ArrayList<Elemento>();
 		// generar el ritmo
 		double longitudCompas = compas.getLongitud();
@@ -70,8 +74,31 @@ public class Pentagrama {
 		for (BloqueRitmico bloque : bloques) {
 			String[] duraciones = bloque.getDuraciones();
 			for (String duracion : duraciones) {
-				Nota notaCandidata = notasCandidatas.get(MusicUtils.rnd.nextInt(notasCandidatas.size()));
-				Nota nota = new Nota(notaCandidata.getNombre(), notaCandidata.getOctava(), duracion);
+				int iter=0;
+				Nota notaCandidata;
+				Nota nota;
+				while(true){								
+				   notaCandidata = notasCandidatas.get(MusicUtils.rnd.nextInt(notasCandidatas.size()));
+				   nota = new Nota(notaCandidata.getNombre(), notaCandidata.getOctava(), duracion);
+				   if(iniciof[penta]==0){
+					   iniciof[penta]=1;
+					   break;
+				   }		
+			       int dist=nota.interval(Noteant[penta]);
+			       if(dist>=mininterval && dist<=maxinterval) break;
+			       if(iter<100){ ++iter; continue; }				       
+			       nota=new Nota(Noteant[penta].getNombre(),Noteant[penta].getOctava(),duracion);		       
+			       Random randomGenerator = new Random();
+			       int randomint;
+			       while(true){			      
+			          randomint = randomGenerator.nextInt(maxinterval)+1;
+			          if(randomint>=mininterval && randomint<=maxinterval) break;
+			       }
+			       int direc = randomGenerator.nextInt(2);
+                   nota.addinterval(randomint,direc);			       			       
+                   break;	
+				}
+				Noteant[penta]=nota;
 				result.add(nota);
 			}
 		}
